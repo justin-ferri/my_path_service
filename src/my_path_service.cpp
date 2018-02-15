@@ -153,7 +153,6 @@ bool callback(example_ros_service::PathSrvRequest& request, example_ros_service:
         ROS_INFO("current (x,y) = (%f, %f)",g_current_pose.position.x,g_current_pose.position.y);
         ROS_INFO("travel distance = %f",travel_distance);         
         
-        
         // a quaternion is overkill for navigation in a plane; really only need a heading angle
         // this yaw is measured CCW from x-axis
         // GET RID OF NEXT LINE AFTER FIXING get_yaw_and_dist()
@@ -166,10 +165,8 @@ bool callback(example_ros_service::PathSrvRequest& request, example_ros_service:
         do_spin(spin_angle); // carry out this incremental action
         // we will just assume that this action was successful--really should have sensor feedback here
         g_current_pose.orientation = pose_desired.orientation; // assumes got to desired orientation precisely
-        
-        //FIX THE NEXT LINE, BASED ON get_yaw_and_dist()
         do_move(travel_distance);  // move forward 1m...just for illustration; SHOULD compute this from subgoal pose
-	g_current_pose = pose_desired; //Poor man's odometry
+	g_current_pose = pose_desired;
         }
 	//yaw_current = yaw_desired;
   return true;
