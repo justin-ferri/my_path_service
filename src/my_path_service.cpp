@@ -149,10 +149,9 @@ bool callback(example_ros_service::PathSrvRequest& request, example_ros_service:
         
         //WRITE THIS FNC: compute desired heading and travel distance based on current and desired poses - completed
         get_yaw_and_dist(g_current_pose, pose_desired,travel_distance, yaw_desired);
-        //1ROS_INFO("pose %d: desired yaw = %f; desired (x,y) = (%f,%f)",i,yaw_desired,
-        //   pose_desired.position.x,pose_desired.position.y); 
-        //2ROS_INFO("current (x,y) = (%f, %f)",g_current_pose.position.x,g_current_pose.position.y);
-        //3ROS_INFO("travel distance = %f",travel_distance);         
+        ROS_INFO("pose %d: desired yaw = %f; desired (x,y) = (%f,%f)",i,yaw_desired, pose_desired.position.x,pose_desired.position.y); 
+        ROS_INFO("current (x,y) = (%f, %f)",g_current_pose.position.x,g_current_pose.position.y);
+        ROS_INFO("travel distance = %f",travel_distance);         
         
         
         // a quaternion is overkill for navigation in a plane; really only need a heading angle
@@ -160,7 +159,7 @@ bool callback(example_ros_service::PathSrvRequest& request, example_ros_service:
         // GET RID OF NEXT LINE AFTER FIXING get_yaw_and_dist()
         //yaw_desired = convertPlanarQuat2Phi(pose_desired.orientation); //from i'th desired pose
         
-        //4ROS_INFO("pose %d: desired yaw = %f",i,yaw_desired);        
+        ROS_INFO("pose %d: desired yaw = %f",i,yaw_desired);        
         yaw_current = convertPlanarQuat2Phi(g_current_pose.orientation); //our current yaw--should use a sensor
         spin_angle = yaw_desired - yaw_current; // spin this much
         spin_angle = min_spin(spin_angle);// but what if this angle is > pi?  then go the other way
@@ -169,11 +168,10 @@ bool callback(example_ros_service::PathSrvRequest& request, example_ros_service:
         g_current_pose.orientation = pose_desired.orientation; // assumes got to desired orientation precisely
         
         //FIX THE NEXT LINE, BASED ON get_yaw_and_dist()
-        //do_move(1.0);  // move forward 1m...just for illustration; SHOULD compute this from subgoal pose
+        do_move(travel_distance);  // move forward 1m...just for illustration; SHOULD compute this from subgoal pose
+	g_current_pose = pose_desired; //Poor man's odometry
         }
 	//yaw_current = yaw_desired;
-	g_current_pose = pose_desired; //Poor man's odometry
-	//rosrun my_apth_Service_pkg my_path_Servic
   return true;
 }
 
