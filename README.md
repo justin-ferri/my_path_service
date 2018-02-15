@@ -2,7 +2,7 @@
 
 my_path_service is a ros package that utilizes a path_service and path_client to move a robot from the bottom left corner of a maze to the top left corner given a set of poses. The set of poses are sent from the client to the service. The service processes the information.
 
-This class depends on the example_ros_service package from wsnewman's learning_ros repository.
+This class depends on the example_ros_service package from wsnewman's learning_ros repository. This package must be in your working ros directory to compile.
 
 ## Example usage
 
